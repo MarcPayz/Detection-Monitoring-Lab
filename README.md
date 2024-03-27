@@ -64,5 +64,58 @@ Ref 3: checking Ubuntu's Ip:
 <br>
 To begin configuring Splunk's server which is running via ubuntu, I need to give it a static ip of 192.168.10.10/24. To start that process I checked which Ip address it already had by typing "ip a" which is 192.168.10.4/24. Next I typed the command "sudo nano /etc/netplan/00/-installer-config.yaml". <br><br> The command "sudo nano /etc/netplan/00-installer-config.yaml" is used to edit a YAML configuration file named "00-installer-config.yaml" located in the "/etc/netplan" directory. <br><br> To break every thing dowm, "sudo is used in Unix-like operating systems to run programs with the security privileges of another user, typically the superuser (root). <br><br> "Nano" is a text editor that runs in the command line. It's a simple and easy-to-use editor commonly used in Unix-like systems. <br><br>"/etc/netplan" is the directory where netplan YAML configuration files are stored. <br><br>"Netplan" is a utility for configuring networking on Linux distributions, particularly those using systemd. <br><br> "00/-installer-config.yaml" is the specific file that we are going to edit using nano. YAML (YAML Ain't Markup Language) is a human-readable data serialization format commonly used for configuration files in software applications and systems. In this case, the file likely contains network configuration settings for the system.
 
+<br>
+<br>
+<br>
+
+Ref 4 & 5: Editing the file:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/3eaf4063-697a-49e2-8afd-8777295c4e52" alt="Before" style="width: 45%; display: inline-block;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/42d91a6e-f7af-4b09-9f8c-358f378d66f6" alt="After" style="width: 45%; display: inline-block;">
+<br>
+After executing the previous command, the reference on the left displays the state before any changes were made, while the one on the right reflects the file after editing it using Nano. <br> <br>
+To clarify the modifications I made: <br>
+I disabled DHCP by entering 'no,' as we intend for this server to have the static IP address 192.168.10.10/24. <br>
+Under 'name servers' for DNS, I configured it to use Google's DNS address, which is 8.8.8.8. <br>
+For 'routes,' which pertains to our router, I added a default route via 192.168.10.1 for all packets. <br>
+
+<br>
+<br>
+<br>
+
+Ref 6: Checking if changes were made and connectivity:
+![Screenshot 2024-03-23 215035](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/f8efed8b-fbd6-4ec1-9306-b0f03e0eacfd)
+<br>
+After saving the file edited via Nano, I ran the command 'ip a' to check if the static IP configuration was saved. As indicated by the circled area, it was indeed saved. Next, I pinged google.com to test the machine's internet connectivity, and as shown, three packets were received with 0% packet loss.
+
+<br>
+<br>
+<br>
+
+Ref 7: Getting Splunk and adding it to share:
+![Shares 1](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/7cc714c6-9304-46fc-9e6c-d26c24fd5dac)
+<br>
+Now its time to add Splunk into our ubuntu VM. To begin, I downloaded Splunk from their website onto my host machine and created a separate folder named 'ADproject.' I placed the Splunk download into this folder. Next, I accessed VirtualBox's settings and navigated to the 'Shared Folders' section for the Ubuntu VM. VirtualBox's shared folder feature allows you to share files and directories between the host operating system (the one running VirtualBox) and the guest operating system (the one running inside the virtual machine). For the folder path, I specified the location of the 'ADproject' folder, and for the folder name, I entered 'ADproject' to indicate that I want this specific folder to be shared because it contains Splunk.
+
+<br>
+<br>
+<br>
+Ref 8 & 9: Downloading Splunk:
+
+![Download shares](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/2336833b-fb2e-47e1-83f5-d54b77d8ac09)
+<br>
+I booted up my Ubuntu VM and navigated to the directory containing the shared files. Then, I ran the command 'ls -la' to view detailed information about the contents of that folder. As shown in the circled green text, Splunk was present and ready to be downloaded. After completing the download, I executed 'ls -la' again to inspect the folders within the application. To access the 'bin' folder, I used the command 'cd bin' to change our directory. We are changing into the binary (bin) folder because those have binary files that splunk can use.
+
+<br><br><br>
+
+Ref 10: Activating splunk: <br>
+Once I changed into the bin folder, I ran the command ./splunk and this is the output:
+![Screenshot 2024-03-23 222143](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/45e098d8-65c7-4966-a679-942e246bb95b)
+<br>
+This indicates that the Splunk server is ready for use and is accessible through the web interface at 'http://splunk:8000.' To access Splunk, I will simply navigate to the web interface from another machine and enter the IP address of our Splunk server, which is the static IP confirmed in Reference 6. The port '8000' signifies that Splunk is running on port 8000. To simulate what I will enter in the web interface's URL, it will be '192.168.10.10:8000.
+
+
+
+
  
 
