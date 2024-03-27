@@ -116,6 +116,26 @@ Once I changed into the bin folder, I ran the command ./splunk and this is the o
 <br>
 This indicates that the Splunk server is ready for use and is accessible through the web interface at 'http://splunk:8000.' To access Splunk, I will simply navigate to the web interface from another machine and enter the IP address of our Splunk server, which is the static IP confirmed in Reference 6. The port '8000' signifies that Splunk is running on port 8000. To simulate what I will enter in the web interface's URL, it will be '192.168.10.10:8000.
 
+<br>
+<br>
+<br>
+
+Now switching to the windows 10 target machine. The very first thing I did was rename the pc to target-PC so we would easily identify it on Splunk when we login and monitor. 
+<br>
+<br>
+Ref 11: Changing Ip address of target-PC:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/d47034be-d5f0-44c6-8b98-0e0720cfe3be" alt="Before" style="width: 45%; display: inline-block;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/24e7a527-85c4-47b2-8b21-4d243e228884" alt="After" style="width: 45%; display: inline-block;">
+<br>
+
+
+
+
+
+
+
+
 
 
 
