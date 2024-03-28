@@ -123,12 +123,44 @@ This indicates that the Splunk server is ready for use and is accessible through
 Now switching to the windows 10 target machine. The very first thing I did was rename the pc to target-PC so we would easily identify it on Splunk when we login and monitor. 
 <br>
 <br>
+<br>
 Ref 11: Changing Ip address of target-PC:
 <br>
 <img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/d47034be-d5f0-44c6-8b98-0e0720cfe3be" alt="Before" style="width: 45%; display: inline-block;">
 <img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/24e7a527-85c4-47b2-8b21-4d243e228884" alt="After" style="width: 45%; display: inline-block;">
 <br>
+To begin with the target-PC, I changed the 192.168.10.5 DHCP address to a static ip address of 192.168.10.100. I gave it a static IP address to just make sure i don't have connectivity issues when communicating to the splunk server. 
 
+<br>
+<br>
+<br>
+Ref 12: Installing Splunk Universal Forwarder:
+
+![Screenshot 2024-03-25 133013](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/e56ae60b-3bdc-4c71-b89b-9404f1d96502)
+During the installation of Splunk Universal Forwarder, when configuring it, the IP address specified on the receiving indexer points to the Splunk server. This indicates that all logs will be forwarded to that IP address on port 9997.
+
+<br>
+<br>
+<br>
+
+To install sysmon, I first had to on the microsoft website to download sysmon, then I had to download a specific configuration file which is called "sysmonconfig.xml" and save it in the sysmon64 folder.
+<br>
+<br>
+Ref 13: Finishing the sysmon process:
+![Screenshot 2024-03-25 134147](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/0001d435-8c38-48b9-8332-00bcdfc2f82b)
+To start the sysmon service I headed over to powershell, and changed my directory to the sysmon folder. Then I ran the command ".\Sysmon64.exe -i ..\sysmonconfig.xml". To breakdown eveything in that command, ".\Sysmon64.exe" is invoking the Sysmon executable file named "Sysmon64.exe" using the current directory notation. This tells PowerShell to run the executable file located in the current directory. <br> <br> The "-i" instructs Sysmon to install itself on the system according to the configuration provided. <br><br> As for "..\sysmonconfig.xml", the ..\ notation indicates that the configuration file for sysmon is located in the previous directory of the current directory. The file name "sysmonconfig.xml" is the actual configuration file that we want to utilize. 
+
+<br>
+<br>
+<br>
+
+Ref 14: Configuring Splunk Universal Fowarder:
+![Screenshot 2024-03-25 134935](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/c3990a3a-7519-445d-9555-131ccb2f0937)
+<br>
+Now I need to configure the telemetry I want Splunk Universal Fowarder to send over to the Splunk server. "Index=enpoint" represent what I will be quering on Splunk to get the log I need. The "enpoint" in this case will be the windows 10 machine and the windows server 2022 machine because I will be doing the same configurations on there as well. <br> <br> The "WinEventLog://Application, Security, System, and sysmon" basically means I want to foward all the logs from those categories into Splunk. "Disabled = false" just means I don't want to disable those logs and I want those logs to be sent over. <br><br>
+I will be saving this notepad file as "inputs.conf" and save it in Splunk Universal Fowarder directory, specifically under the "local" directory". Any time I make changes to this configurations file, I will need to restart the Splunk Universal Service on windows services. 
+
+Ref 15: 
 
 
 
