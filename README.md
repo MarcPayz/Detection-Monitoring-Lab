@@ -355,7 +355,23 @@ Posing as an advesary, I will be utilizing a tool called Crowbar. Crowbar is a t
 <br>
 <br>
 <br>
-Ref 33: 
+Ref 33: Crowbar attack:
+
+![Crowbar](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/31388c72-ecfd-423e-8ac4-ac5d32de131b)
+As an advasary, I utilied the command "crowbar -b rdp -u DiorP -C passwords.txt -s 192.168.10.100/32". To explain this crowbar command into detail: <br> <br>
+-b rdp: This option specifies the service or protocol to target, in this case, RDP (Remote Desktop Protocol). Crowbar will attempt to perform a brute-force attack on RDP services enabled on that machine. <br> <br>
+
+-u DiorP: This option specifies the username to use during the brute-force attack. In this case, the username is "DiorP". <br><br>
+
+-C passwords.txt: This option specifies the path to a file containing a list of passwords to use during the brute-force attack. Crowbar will try each password in this file in an attempt to gain access to the RDP service. <br> <br>
+
+-s 192.168.10.100/32: This option specifies the target IP address or IP range to attack. In this case, crowbar will attempt to brute force the specific ip address of 192.168.10.100. <br><br>
+
+After a while, crowbar results in a RDP-SUCCESS meaning the RDP service was successfully bruteforced and it also provides the password used for that service which is "Mypeopleisgood1" which isn't the most secure password.
+
+
+
+
 
 
 
