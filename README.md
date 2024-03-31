@@ -291,6 +291,89 @@ Ref 27: HR OU:
 <img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/71268136-aab8-47b9-bc96-a35c9ac65a5c" alt="Rresult" style="display:inline; width:45%;"> <br>
 I created another OU called "HR" which will represent all the HR employees in the organization and one of the users is "Jenny Smith". She will have the username JennyS with her own set of credentials to login. 
 
+<br>
+<br>
+<br>
+Now I will be adding the target-PC into the domain Payz
+
+<br>
+<br>
+<br>
+
+Ref 28: Adding target-pc into Domain:
+![domain](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/2fbbb6f4-498a-4270-97bc-be41a9350f49)
+![Error](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/73dc990c-1b17-4e7a-b065-ae5437431241)
+"To add the target PC to the domain, I will navigate to System Properties and select 'Change.' Then, I'll type 'PAYZ.LOCAL' into the 'Member of' field and click OK. However, during this process, I encountered an error indicating that my Active Directory server couldn't be contacted.
+<br> <br> I've dealt with this error before, so I instantly know what to do. To fix it, I need to point my DNS configuration toward my Active Directory Domain Controller's IP address.
+
+<br>
+<br>
+<br>
+Ref 29: Changing DNS ip config:
+
+![dns'](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/f021107c-be06-43b9-80c0-3a6c1f7205db)
+To change the DNS IP configuration, I will navigate to 'Network Connections' > 'Ethernet Properties' and select 'Internet Protocol Version 4 (IPv4)' and then proceed to its properties. In the 'Preferred DNS server' field, I will change it to the ADPAYZ server's IP address, which is 192.168.10.7. 
+
+<br>
+<br>
+<br>
+
+Ref 30: Joining the Domain:
+
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/9d1f2704-5c50-4fd0-90df-4e71f07069d7" alt="welcome" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/98869bff-b9ec-4409-8351-9d86349a4902" alt="Jenny" style="display:inline; width:45%;"> <br>
+Now that I've pointed the DNS towards ADPAYZ, I can repeat the same steps to successfully join the domain PAYZ.LOCAL. <br><br> The second image shows me authenticating with Jenny's credentials and successfully logging in.
+
+<br>
+<br>
+<br>
+
+Ref 31: Kali Linux Config: 
+![kali1](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/7c717cee-d4e2-4d72-bad4-746d320d92b6)
+Switching over to the Kali Linux VM, I need to ensure that it's on the same network as every other VM. To do that, I'll navigate to 'Wired connection 1' and access the IPv4 settings. For the IP address, I will assign it as 192.168.19.250, with a network mask of /24 and the gateway set to 192.168.10.1. As for DNS, I'll use Google's DNS (8.8.8.8).
+
+<br>
+<br>
+<br>
+Ref 32: Checking for connectivity:
+
+![connectivity](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/96613a9f-e4dd-498d-9bbb-8ff90e1a261a)
+On the command line, I typed 'ip a' to check if my configurations were set, and as you can see, it was successfully changed to 192.168.10.250/24. To double-check that the Kali Linux VM was on the same network as everything else, I pinged Splunk's IP address, which is 192.168.10.10, and received all packets with zero packet loss.
+
+<br>
+<br>
+<br>
+
+This concludes the creation of the homelab, now I will act as an adversary by switching to the Kali Linux vm and simmulating possible attacks that can happen in a real world environment. 
+
+<br>
+<br>
+<br>
+
+Posing as an advesary, I will be utilizing a tool called Crowbar. Crowbar is a tool used in cybersecurity for brute-force attacks. Essentially, it's a program that repeatedly tries different combinations of usernames and passwords until it finds the correct ones to access a system or an account. It's often used by hackers to gain unauthorized access to systems or accounts by guessing login credentials.
+
+<br>
+<br>
+<br>
+Ref 33: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
