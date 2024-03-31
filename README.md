@@ -160,7 +160,169 @@ Ref 14: Configuring Splunk Universal Fowarder:
 Now I need to configure the telemetry I want Splunk Universal Fowarder to send over to the Splunk server. "Index=enpoint" represent what I will be quering on Splunk to get the log I need. The "enpoint" in this case will be the windows 10 machine and the windows server 2022 machine because I will be doing the same configurations on there as well. <br> <br> The "WinEventLog://Application, Security, System, and sysmon" basically means I want to foward all the logs from those categories into Splunk. "Disabled = false" just means I don't want to disable those logs and I want those logs to be sent over. <br><br>
 I will be saving this notepad file as "inputs.conf" and save it in Splunk Universal Fowarder directory, specifically under the "local" directory". Any time I make changes to this configurations file, I will need to restart the Splunk Universal Service on windows services. 
 
-Ref 15: 
+<br>
+<br>
+
+Ref 15: Local System Account:
+![Screenshot 2024-03-25 135316](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/d1d6d53e-e02b-405e-a9d1-9486ece40a82)
+The final configuration step for the Splunk Universal Forwarder is determining the service's 'Log on as' setting, crucial for sending telemetry data. Navigating to Windows Services and accessing the service's 'Properties' by right-clicking, I'll select 'Log on as' to be 'Local System account.' This choice grants the Splunk Forwarder access to all local system resources—files, registry keys, and network resources—with full control permissions. This approach ensures comprehensive log collection and transmission to Splunk.
+<br> <br> The default option might encounter permission limitations preventing it from collecting logs so we want to avoid that. 
+
+<br>
+<br>
+<br>
+
+Switching over to Splunk, opened the web browser, and typed '192.168.10.10:8000' into the URL bar. Then, I logged into Splunk using my credentials
+
+<br> 
+<br>
+Ref 16: Creating a new Index on Splunk:
+
+![new index](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/6beb23b6-3523-4623-bbde-f0435778f33f)
+Now that we are logged into Splunk, I need to create a new index. An index is like a folder where data is stored. When you put data into Splunk, it goes into an index. Indexes help organize and manage data, making it easy to search for and analyze later. <br> <br> I am naming this index "endpoint" because that name needs to match what I put in the inputs.conf file on Ref 14. After that I will click on save to lock it in. 
+
+<br>
+<br>
+<br>
+
+Ref 17: Reciving Port:
+![Port](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/f45733bf-512f-44ff-b280-b37da3fb52f2)
+The final configuration task on Splunk is to ensure it listens on port 9997 for incoming telemetry from the Splunk Forwarder. As mentioned in Reference 12, the Splunk Forwarder sends logs by default on port 9997. Thus, I only needed to ensure this configuration on Splunk's end; otherwise, no data will be available.
+
+<br>
+<br>
+<br>
+I will replicate the installation and configuration of sysmon and splunk universal fowarder on the windows server 2022. 
+
+<br>
+<br>
+<br>
+
+Ref 18: Checking Splunk for both hosts and configuration:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/8b3105a2-e8dc-4f12-912a-5a38f894233d" alt="First" style="width: 45%;">
+    <img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/eb8b4ac8-ab9a-4ea4-af4d-60d5697084ad" alt="Second" style="width: 45%;">
+<br>
+The first image shows me searching for 'index=endpoint'. Upon selecting on 'host' the results confirm that I have configured everything correctly because both of my endpoints, 'TARGET-PC' and 'ADPAYZ' (which is a Windows Server 2022), are recognized by Splunk, and it's already displaying various telemetry data gathered about them. <br> <br> The second image displays the 'source,' indicating the origin of the logs and reflecting the configurations set in the inputs.conf file. These configurations specify that logs related to system, application, security, and sysmon will be collected.
+
+<br>
+<br>
+<br>
+Switching over to ADPAYZ where I will show steps reguarding setting up active directory to simulate a real world enterprise environment.
+<br>
+<br>
+<br>
+Ref 19: Setting up static ip address:
+
+![Static ip](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/e2a4bc27-bb57-48c0-a2c5-05ec707fe2bb)
+To get the Active Directory ball rolling, I need to make sure the ADPAYZ server has the static ip address of 192.168.10.7. This ensures that this vm is in the same network as everything else, and to double check that, I pinged Splunk's ip address of 192.168.10.10 to solidify that they can communicate with each other. 
+
+<br>
+<br>
+<br>
+Ref 20: Installing Domain Services:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/a2349554-5aa2-4480-a915-c40602255060" alt="First" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/060cd81c-6924-482b-ac17-5dbc27209a8f" alt="Second" style="display:inline; width:45%;"> <br>
+To begin installing domain services, I will head over to server manager and hover my mouse over manage and select "Add Roles and Features". <br> <br> The second image shows the next step, and upon reaching "Server Roles" I will select "Active Directory Domain Services" and select "Add Features".
+
+<br>
+<br>
+<br>
+Ref 21: Promoting server to Domain Controller:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/3b4e6e81-94fc-4e28-97bd-0005c4f0d9e7" alt="Installation" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/ae0ce4b2-74f7-4719-80be-d4c5c52ee090" alt="Promo" style="display:inline; width:45%;"> <br>
+The first image shows the installation for Active Directory Domain Services has succeeded on our server. <br> <br> The second image shows the next step which is heading back to server manager and selecting the option "Promote this server to a domain controller".
+
+<br>
+<br>
+<br>
+
+Ref 22: Domain Name & Installation:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/ebb03a18-6353-4864-ad79-b92f74a03166" alt="Forest" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/aed41599-74e4-40bd-bb34-032fd763f4fd" alt="Prereq" style="display:inline; width:45%;"> <br>
+Next step includes selecting "add a new forest" which means creating a separate and independent instance of Active Directory. In other words this new forest operates on its own, with its own set of rules, users, and resources. I will be naming my root domain name as "payz.local". <br><br> The second image shows the "Prerequisites check" tab where it'll just make sure your machine meets the prerequisites to install Active Directory Domain Services. After that is done, I will select install and restart my machine.
+
+<br>
+<br>
+<br>
+
+Ref 23: Login:
+![Login](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/5f969dfe-e401-4645-b618-1c2f40ad0722)
+Logging back into the server, I know everything went well when I see "PAYZ\Adminitrator". "PAYZ" is the domain every new user will join when logging into their account.
+
+<br>
+<br>
+<br>
+
+Ref 24: Creating OU for users:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/be25aafc-017d-469f-b510-02aebdc08a33" alt="Tools" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/acfd37fd-15c0-4ba6-9c9c-b04291068d3f" alt="OU" style="display:inline; width:45%;"> <br>
+To begin the process of adding new users, I will hover over "tools" on server manager and select "Active Directory Users and Computers"
+<br> <br> Next I will click on the drop down for "payz.local" and select "New" into "Organizational Unit" (OU).
+
+<br>
+<br>
+<br>
+
+Ref 25: User Creation Process Dior:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/c027a096-8573-4244-8f67-4a9310665aeb" alt="IT" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/1e4717be-8112-400e-8278-7205aa31a859" alt="DiorP" style="display:inline; width:45%;"> <br>
+The first image: After creating the OU called "IT" which will represent users that are working in the Information Technology (IT) department in an organization, I will select "New" and select "User" <br> <br> The second image: The user Dior Payz logon name will be "DiorP" with his own set of credentials to login from another computer on the same domain. 
+
+<br>
+<br>
+<br>
+
+Ref 26: Result: 
+![User](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/73e7f361-ae02-453c-9571-88b81d655547)
+This shows a new user (DiorP) was successfully made in the IT OU. 
+
+<br>
+<br>
+<br>
+Ref 27: HR OU:
+<br>
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/0b7b451e-9a60-455c-b73b-d9693880e960" alt="Jenny" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/71268136-aab8-47b9-bc96-a35c9ac65a5c" alt="Rresult" style="display:inline; width:45%;"> <br>
+I created another OU called "HR" which will represent all the HR employees in the organization and one of the users is "Jenny Smith". She will have the username JennyS with her own set of credentials to login. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
