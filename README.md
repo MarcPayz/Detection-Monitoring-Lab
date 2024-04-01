@@ -358,7 +358,7 @@ Posing as an advesary, I will be utilizing a tool called Crowbar. Crowbar is a t
 Ref 33: Crowbar attack:
 
 ![Crowbar](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/31388c72-ecfd-423e-8ac4-ac5d32de131b)
-As an advasary, I utilied the command "crowbar -b rdp -u DiorP -C passwords.txt -s 192.168.10.100/32". To explain this crowbar command into detail: <br> <br>
+As an advesary, I utilied the command "crowbar -b rdp -u DiorP -C passwords.txt -s 192.168.10.100/32". To explain this crowbar command into detail: <br> <br>
 -b rdp: This option specifies the service or protocol to target, in this case, RDP (Remote Desktop Protocol). Crowbar will attempt to perform a brute-force attack on RDP services enabled on that machine. <br> <br>
 
 -u DiorP: This option specifies the username to use during the brute-force attack. In this case, the username is "DiorP". <br><br>
@@ -368,6 +368,132 @@ As an advasary, I utilied the command "crowbar -b rdp -u DiorP -C passwords.txt 
 -s 192.168.10.100/32: This option specifies the target IP address or IP range to attack. In this case, crowbar will attempt to brute force the specific ip address of 192.168.10.100. <br><br>
 
 After a while, crowbar results in a RDP-SUCCESS meaning the RDP service was successfully bruteforced and it also provides the password used for that service which is "Mypeopleisgood1" which isn't the most secure password.
+
+<br>
+<br>
+<br>
+
+Scenario: The user, DiorP reported to the cybersecurity team that important files have been deleted from his computer and he's asking the team to look into it. 
+
+<br>
+<br>
+<br>
+
+Ref 34: Splunk Query
+![Query](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/3c9dd823-60f8-4eea-9279-9bb46f5e2f32)
+As a CyberSecurity Analyst, I will begin my analysis. I will query "index=endpoint DiorP" and to narrow it down even more, I will add in "WinEventLog:Security". 
+
+<br>
+<br>
+<br>
+Ref 35: Bruteforce attempts:
+
+![Splin](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/4282fc58-4a22-4dcc-b393-41318261e3a3)
+Looking at the data provided from the query, I can automatically assume that a brute force attempt was being made because of the timing and the presence of 'Account for which logon failed'. The password brute force attempts were all made within the same second, indicating a brute force attack. Other indicators, such as 'Account for which logon failed', also suggest that multiple password attempts were made, and none of them were successful.
+
+<br>
+<br>
+<br>
+Ref 36: Event Code:
+
+![event code](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/666375b7-5701-4de2-8522-358bc6a67bda)
+Looking at the event code, we can see there was 101 counts for the event code: 4625 and 6 for event code: 4624.
+
+<br>
+<br>
+<br>
+Ref 37: Event code details:
+<br>
+
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/3da3ed85-14c5-4fad-b3ac-411f13d4e15f" alt="24" style="display:inline; width:45%;">
+<img src="https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/c710ae2f-1cd8-4c5b-b78c-6ab2f4927eef" alt="25" style="display:inline; width:45%;"> <br>
+Using the tool 'Ultimate IT Security,' it indicates that event code 4624 signifies a successful login attempt onto the computer, whereas event code 4625 indicates a failed login attempt. This enforces my previous analysis, suggesting that the account belonging to the user DiorP was subject to a brute force attack, resulting in the adversary successfully gaining access and potentially causing damage.
+
+<br>
+<br>
+<br>
+Ref 38: Gathering info on adversary:
+
+![exposed](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/ce97f174-29d6-466f-b08b-d2e1f5fc1737)
+Heading back to Splunk to gather more information on the adversary, if I extend one of the lines from the brute force event and head to network information, I can see the workstation's name that conducted this attack is called 'Kali', and its IP address is 192.168.10.250. After gathering all this data on this security event, I can give it to the SOC manager or the incident response team for further investigation.
+
+<br>
+<br>
+<br>
+
+Now I will install and perform Atomic Red Team attacks that utilizes the MITRE ATT&CK framework. Assume I am the adversary who successfully logged into DiorP user account.
+
+<br>
+<br>
+<br>
+
+ Ref 39: Attack folders:
+ 
+ ![folder](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/709fc8e8-4dfd-47db-bdb9-7895f7186e0a)
+
+ This shows all the potential attacks commands I can perform and as you can see each of them start with "T1..."
+
+<br>
+<br>
+Ref 40: MITRE ATT&CK:
+
+![Persistance](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/38e2d17f-c898-4014-a825-7c58b6a1b3f8)
+Heading to the MITRE ATT&CK website, I (the adversary) will be utilizing the command "T1136" which will create persistence into the network by creating a local user account.
+
+<br>
+<br>
+<br>
+Ref 41: Powershell execution:
+
+![Powershell](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/85523ac3-6743-49d1-95cf-8f239464cbc9)
+To execute the account creation for persistence in the network, I utilized the command 'Invoke-AtomicTest T1136.001'. As you can see, the command was successful, and it added the new local user called 'NewLocalUser'. Not only that, it added that user to the administrators group, which gives that user elevated privileges on the network. It also ensured that the user's account password never expires and allowed the user to log on at any hour throughout the day. Now since the user is a admin, they can pivot throughout the network to other systems or execute more commands that can cause even more damage. 
+
+<br>
+<br>
+<br>
+Ref 42: Checking Splunk:
+
+![New User](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/6570c9f3-8694-4fd4-ada8-a3b146ad7445)
+After receiving Splunk Alerts, I will query Index=endpoint for NewLocalUser. As you can see, a new user named 'NewLocalUser' was created. This immediately indicates that the adversary is attempting to establish persistence within the network, enabling them to log back in at will to perform malicious activities. <br> <br> To counter this, I will promptly initiate containment procedures by isolating the target PC from the network. <br> <br> Next I would remediate the actions taken by the adversary by disabling or deleting the unauthorized user account, removing any associated backdoors or malware, and patching any vulnerabilities that were exploited.
+
+<br>
+<br>
+<br>
+
+Ref 43: Mitigation:
+
+![pass policy](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/0cd6dffa-caad-4ff3-aaab-40a652bf720d)
+![Lockout](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/63e688d3-a4bf-45f7-a902-564d4d39a3bf)
+To mitigate this security risk, aimed at stopping brute force attempts and unauthorized logins, I have implemented a password policy. I enabled complexity requirements to prevent users from being susceptible to dictionary attacks. Additionally, I increased the password length allowance to 14 characters. Furthermore, to strengthen the password policy, I adjusted the maximum password age to 90 days, mandating users to change their passwords every three months. <br><br> I also implemented an account lockout policy wherein users are permitted only three login attempts. If unsuccessful, the user will be locked out for 10 minutes. Implementing this policy will effectively mitigate brute force attempts targeting users. Previously, brute force attacks would systematically try every password until one succeeded, but now, due to the account lockout, this approach is rendered ineffective.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
