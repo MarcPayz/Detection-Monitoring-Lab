@@ -464,7 +464,25 @@ Ref 43: Mitigation:
 
 ![pass policy](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/0cd6dffa-caad-4ff3-aaab-40a652bf720d)
 ![Lockout](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/63e688d3-a4bf-45f7-a902-564d4d39a3bf)
-To mitigate this security risk, aimed at stopping brute force attempts and unauthorized logins, I have implemented a password policy. I enabled complexity requirements to prevent users from being susceptible to dictionary attacks. Additionally, I increased the password length allowance to 14 characters. Furthermore, to strengthen the password policy, I adjusted the maximum password age to 90 days, mandating users to change their passwords every three months. <br><br> I also implemented an account lockout policy where users are permitted only three login attempts. If unsuccessful, the user will be locked out for 10 minutes. Implementing this policy will effectively mitigate brute force attempts targeting users. Previously, brute force attacks would systematically try every password until one succeeded, but now, due to the account lockout, this approach is rendered ineffective.
+To mitigate this security risk, aimed at stopping brute force attempts and unauthorized logins, I have implemented a password policy. I enabled complexity requirements to prevent users from being susceptible to dictionary attacks. Additionally, I increased the password length allowance to 14 characters. Furthermore, to strengthen the password policy, I adjusted the maximum password age to 90 days, mandating users to change their passwords every three months. <br><br> I also implemented an account lockout policy where users are permitted only three login attempts. If unsuccessful, the user will be locked out for 10 minutes. Implementing this policy will effectively mitigate brute force attempts targeting users via RDP. Previously, brute force attacks would systematically try every password until one succeeded, but now, due to the account lockout, this approach is rendered ineffective.
+
+<br>
+<br>
+<br>
+To add even more security, I will be implementing an IPS/IDS with Snort. Additionally, I have added another virtual machine running Ubuntu, which is equipped with Snort. Snort's role will be to block and alert against any malware or intrusions targeting both the target PC and ADPAYZ. Furthermore, all the snort logs will be forwarded to Splunk for a centralized view.
+<br>
+<br>
+<br>
+Ref 44: editing Snort.conf file:
+
+![conff](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/fc0b9518-55ef-4f2b-b75b-130c00638a8f)
+The snort.conf file is a configuration file used by the Snort intrusion detection system (IDS). It contains various settings and rules that dictate how Snort analyzes network traffic and detects potential security threats. Looking at 'ipvar HOME_NET 192.168.10.0/24' this is where I specify I want the 192.168.10.0/24 network to be protected. Meaning if there's any malware or anything malicous happening in that network, then snort will alert me. <br> <br> As for 'ipvar EXTERNAL_NET any', this means Snort should consider any IP address outside of the network being monitored as the potential source of threats.
+
+<br>
+<br>
+<br>
+
+
 
 
 
