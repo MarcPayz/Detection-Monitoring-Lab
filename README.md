@@ -37,7 +37,7 @@ Atomic Red Team is a framework for simulating both offensive and defensive tacti
 <br>
 <br>
 ## Lab Logial Diagram:
-![AD logical Diagram](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/a5d13f19-f2b2-4ae6-af1d-4ec88d369c2f)
+![AD - Logical Diagram](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/1bd386e0-b6e2-468a-96b8-e77d27d15001)
 
 This is the logical diagram of the lab environment. I will utilize four operating systems, including a Windows 10 virtual machine (VM) designated as the target machine. The target VM will have Sysmon and Splunk Universal Forwarder installed to forward various telemetry to Splunk. Additionally, Atomic Red Team will be installed on the target VM to simulate additional adversary attacks.<br> <br> The second operating system will be Windows Server 2022, which will utilize Active Directory Domain Services to organize users into different organizational units (OUs), simulating a real enterprise environment. Windows Server 2022 will also have Sysmon and Splunk Universal Forwarder installed to send telemetry to Splunk in case it becomes a target of adversaries. <br><br> The third operating system will be Ubuntu, which will host our Splunk server running on port 8000. Lastly, Kali Linux OS will serve as the attacker's operating system. <br><br> All vm's will be on the same local network which will be 192.168.10.0/24.
 <br>
@@ -481,6 +481,72 @@ The snort.conf file is a configuration file used by the Snort intrusion detectio
 <br>
 <br>
 <br>
+
+Ref 45: Snort.conf file community rules:
+
+![rules](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/37c94b01-b80a-4faa-90dd-0b943c110d7d)
+
+
+This circled rule ensures that I receive alerts for any NMAP reconnaissance. This Snort alert is important to have because my ADPAYZ server has many open ports. If I receive any potential NMAP reconnaissance scanning alerts on that Active Directory server, it could be a precursor to a potential attack.
+
+<br>
+<br>
+<br>
+
+ Ref 46: Launching Snort: 
+ ![launch](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/d808bcd2-b80f-46ea-b06e-85d9d155a55e)
+ This command launches snort. To breakdown everything I wrote: <br><br>
+sudo: This command is used to execute the following command with elevated privileges. It allows users to run programs with the security privileges of another user, by default the superuser (root). <br>
+
+snort: This is the command to execute Snort. <br>
+
+-q: This option tells Snort to run in quiet mode. In quiet mode, Snort will suppress banner display and suppress some informational messages, which can be useful for running Snort as a background process or when automation is involved. <br>
+
+-l /var/log/snort/: This option specifies the directory where Snort will log its output. In this case, Snort will log its output to the directory /var/log/snort/. <br>
+
+-i enp0s3: This option specifies the network interface that Snort will listen on for network traffic. In this case, Snort will listen on the network interface enp0s3. <br>
+
+-A full: This option specifies the detection mode used by Snort. The full mode performs packet logging, session logging, and application layer logging. It provides the most comprehensive level of logging but can generate a significant amount of output. <br>
+
+-c /etc/snort/snorttest.conf: This option specifies the path to the configuration file that Snort will use. In this case, Snort will use the configuration file located at /etc/snort/snorttest.conf. 
+
+<br>
+<br>
+<br>
+
+Switching over to Kali Linux vm
+<br>
+<br>
+
+Ref 47: Nmap:
+
+![Screenshot 2024-04-02 001122](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/40dd57b7-e3f7-4618-811e-dc3df3721aac)
+On my Kali Linux vm, I wrote the command nmap -sV 192.168.10.7 for basic recon on the ADPAYZ server. To break that down,<br> -s: This option is used to specify the type of scan. In this case, it stands for "Scan" or "Scanning". <br>
+V: This is a sub-option that stands for "Version detection". It tells nmap to attempt to determine the version of services running on the target ports. <br> As you can see, this command can provide an attacker with so many learning opportunities on our server, which can enable them to continue their attack plan. An adversary can target a specific port that may have an unpatched service running on it, which can have catastrophic effects, especially in an enterprise environment. Having an alert that can notify me when scans like this happen can help me prepare for any possible malicious activity.
+
+<br>
+<br>
+<br>
+Ref 48: Snort Alert on Splunk:
+
+![snort alert](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/30df5dd4-c554-40bf-8f4b-8e7afdcf0594) <br>
+Looking at the alerts on Splunk, we can see the source IP address of 192.168.10.250 (Kali Linux) attempted a DNS and SNMP version information leak on 192.168.10.7 (ADPAYZ). With this alert information from Snort, we can prepare for an attack or enhance our security posture by closing unneeded ports and only keeping necessary ports open that are essential for business operations. If the IP address 192.168.10.250 isn't recognized by the organization, I can create an inbound firewall rule that blocks that IP address. I can also make sure all the necessary services running on those ports are up to date.
+
+### Lab Finished.
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
 
 
 
