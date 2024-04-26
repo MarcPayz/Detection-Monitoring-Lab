@@ -532,7 +532,7 @@ Ref 48: Snort Alert on Splunk:
 ![snort alert](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/30df5dd4-c554-40bf-8f4b-8e7afdcf0594) <br>
 Looking at the alerts on Splunk, we can see the source IP address of 192.168.10.250 (Kali Linux) attempted a DNS and SNMP version information leak on 192.168.10.7 (ADPAYZ). With this alert information from Snort, we can prepare for an attack or enhance our security posture by closing unneeded ports and only keeping necessary ports open that are essential for business operations. If the IP address 192.168.10.250 isn't recognized by the organization, I can create an inbound firewall rule that blocks that IP address. I can also make sure all the necessary services running on those ports are up to date.
 
-## Lab Finished.
+  ## Lab Completed.
 
 
 
