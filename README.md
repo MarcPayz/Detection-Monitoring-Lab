@@ -21,7 +21,7 @@ The primary objective of this lab is to enhance incident response capabilities b
 - Atomic Red Team
   
 ## General Knowledge
-Before we begin I will give a litle background on Splunk, Splunk Universal Fowarder, Sysmon, and Atomic Red Team.
+Before we begin I will give a litle background on Splunk, Splunk Universal Fowarder, Sysmon, Atomic Red Team and Snort.
 <br>
 <br>
 Splunk is a leading SIEM (Security Information and Event Management) platform that helps organizations monitor, analyze, and respond to security events and incidents in real-time. It's commonly referred to as a "Data-to-Everything" platform because it enables organizations to gain insights from a wide range of data sources, including logs, events, metrics, sensors, and more.
@@ -34,6 +34,9 @@ Sysmon, short for System Monitor, is a Windows system service and device driver 
 <br>
 <br>
 Atomic Red Team is a framework for simulating both offensive and defensive tactics in cybersecurity. It provides a collection of small, discrete tests called "atomic tests" that simulate specific adversary behaviors or techniques. These tests help organizations evaluate their security controls, detection capabilities, and incident response procedures in a controlled environment.
+<br>
+<br>
+Snort is an open-source network intrusion detection and prevention system (NIDS/NIPS) developed by Cisco. It is widely used for monitoring network traffic, detecting malicious activity, and preventing attacks.
 <br>
 <br>
 ## Lab Logial Diagram:
