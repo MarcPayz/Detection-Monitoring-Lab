@@ -27,7 +27,7 @@ Before we begin I will give a litle background on Splunk, Splunk Universal Fowar
 Splunk is a leading SIEM (Security Information and Event Management) platform that helps organizations monitor, analyze, and respond to security events and incidents in real-time. It's commonly referred to as a "Data-to-Everything" platform because it enables organizations to gain insights from a wide range of data sources, including logs, events, metrics, sensors, and more.
 <br>
 <br>
-Splunk Universal Forwarder is a lightweight tool that collects data from various sources such as enpoinds and sends it to a Splunk deployment for indexing and analysis.
+Splunk Universal Forwarder is a lightweight tool that collects data from various sources such as endpoinds and sends it to a Splunk deployment for indexing and analysis.
 <br>
 <br>
 Sysmon, short for System Monitor, is a Windows system service and device driver developed by Microsoft. It provides advanced logging and monitoring capabilities to help detect and investigate suspicious or malicious activity on Windows systems.
@@ -160,7 +160,7 @@ To start the sysmon service I headed over to powershell, and changed my director
 Ref 14: Configuring Splunk Universal Fowarder:
 ![Screenshot 2024-03-25 134935](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/c3990a3a-7519-445d-9555-131ccb2f0937)
 <br>
-Now I need to configure the telemetry I want Splunk Universal Fowarder to send over to the Splunk server. "Index=endpoint" represent what I will be quering on Splunk to get the log I need. The "enpoint" in this case will be the windows 10 machine and the windows server 2022 machine because I will be doing the same configurations on there as well. <br> <br> The "WinEventLog://Application, Security, System, and sysmon" basically means I want to foward all the logs from those categories into Splunk. "Disabled = false" just means I don't want to disable those logs and I want those logs to be sent over. <br><br>
+Now I need to configure the telemetry I want Splunk Universal Fowarder to send over to the Splunk server. "Index=endpoint" represent what I will be quering on Splunk to get the log I need. The "endpoint" in this case will be the windows 10 machine and the windows server 2022 machine because I will be doing the same configurations on there as well. <br> <br> The "WinEventLog://Application, Security, System, and sysmon" basically means I want to foward all the logs from those categories into Splunk. "Disabled = false" just means I don't want to disable those logs and I want those logs to be sent over. <br><br>
 I will be saving this notepad file as "inputs.conf" and save it in Splunk Universal Fowarder directory, specifically under the "local" directory". Any time I make changes to this configurations file, I will need to restart the Splunk Universal Service on windows services. 
 
 <br>
