@@ -1,4 +1,4 @@
-# CyberSecurity Detection & Monitoring Lab
+# Cybersecurity Detection & Monitoring Lab
 
 ## Objective
 
@@ -46,7 +46,7 @@ This is the logical diagram of the lab environment. I will utilize four operatin
 <br>
 <br>
 
-## Steps
+## Lab setup: Ref 1 - Ref 32
 Ref 1: Creating NAT Network:
 ![Creating Nat network](https://github.com/MarcPayz/Detection-Monitoring-Lab/assets/163923336/2df8d314-ff60-4e1f-b3b8-8c1b34b268c7)
 After installing all OS's into virtual Box, I will need to make sure all virtual machines are in the same network. To start that, I clicked on tools which led me properties. Then I created a new name which I called it "AD Project" gave it an IPV4 prefix of 192.168.10.0/24. I also enabled DHCP incase for the future I want to add another vm and that can recieve an IP address automatically. 
